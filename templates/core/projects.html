@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Projects - TileWorld{% endblock %}
+
+{% block content %}
+<!-- Projects Header -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center mb-4">Our Projects</h1>
+        <p class="text-center lead">Explore our portfolio of completed tile manufacturing and installation projects</p>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="projects py-5">
+    <div class="container">
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ project.title }}</h3>
+                        <p class="card-text">{{ project.content }}</p>
+                        <p class="text-muted">
+                            <small>Completed: {{ project.created_at|date:"F d, Y" }}</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Start Your Project?</h2>
+        <p class="lead mb-4">Let us help you create the perfect tile solution for your space</p>
+        <a href="{% url 'contact' %}" class="btn btn-light btn-lg">Contact Us</a>
+    </div>
+</section>
+{% endblock %}
