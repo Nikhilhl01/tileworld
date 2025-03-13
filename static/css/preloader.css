@@ -1,0 +1,146 @@
+/* Preloader Styles */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #222222; /* Darker background to match the image */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: all 0.8s ease-in-out;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.preloader-text {
+    margin-top: 30px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #ffffff; /* White text */
+    letter-spacing: 3px;
+    font-weight: 500;
+    opacity: 0.9;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.preloader-tagline {
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #ffd700; /* Accent color yellow */
+    letter-spacing: 2px;
+    font-weight: 400;
+    opacity: 0.8;
+    animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* 3D Cube Animation */
+.cube-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    perspective: 800px;
+}
+
+.cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg) rotateY(45deg);
+    animation: cube-spin 6s infinite linear;
+}
+
+.cube-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Top face - white */
+.cube-face.top {
+    background-color: #ffffff;
+    transform: rotateX(90deg) translateZ(30px);
+}
+
+/* Front face - light gray */
+.cube-face.front {
+    background-color: #cccccc;
+    transform: translateZ(30px);
+}
+
+/* Right face - medium gray */
+.cube-face.right {
+    background-color: #999999;
+    transform: rotateY(90deg) translateZ(30px);
+}
+
+/* Bottom face - dark gray (primary color) */
+.cube-face.bottom {
+    background-color: #555555;
+    transform: rotateX(-90deg) translateZ(30px);
+}
+
+/* Back face - yellow (accent color) */
+.cube-face.back {
+    background-color: #ffd700;
+    transform: rotateY(180deg) translateZ(30px);
+}
+
+/* Left face - secondary gray */
+.cube-face.left {
+    background-color: #777777;
+    transform: rotateY(-90deg) translateZ(30px);
+}
+
+/* Shadow effect */
+.cube-shadow {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotateX(90deg) translateZ(-40px) scale(0.8);
+    filter: blur(10px);
+    opacity: 0.6;
+}
+
+@keyframes cube-spin {
+    0% {
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100% {
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+
+/* Highlight effect on cube edges */
+.cube-face::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 215, 0, 0.3); /* Subtle yellow highlight */
+    box-sizing: border-box;
+}
+
+.cube-face.top::after {
+    border-color: rgba(255, 215, 0, 0.5); /* Stronger yellow highlight on top */
+}

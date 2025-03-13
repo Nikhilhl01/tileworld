@@ -88,12 +88,39 @@ class Contact(models.Model):
     # Contact form fields
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    subject = models.CharField(max_length=200)
+    phone = models.CharField(max_length=20)
+    subject = models.CharField(max_length=200, default='Project Inquiry')
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    # Email tracking fields
+    email_sent = models.BooleanField(default=False)
+    email_sent_at = models.DateTimeField(null=True, blank=True)
+    admin_notes = models.TextField(blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('new', 'New'),
+            ('in_progress', 'In Progress'),
+            ('completed', 'Completed'),
+            ('archived', 'Archived')
+        ],
+        default='new'
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Contact Form Submission'
+        verbose_name_plural = 'Contact Form Submissions'
 
     def __str__(self):
-        return f'{self.name} - {self.subject}'
+        return f'{self.name} - {self.subject} ({self.status})'
+
+    def mark_email_sent(self):
+        from django.utils import timezone
+        self.email_sent = True
+        self.email_sent_at = timezone.now()
+        self.save()
 
 # SliderImage model for managing homepage slider/carousel
 class SliderImage(models.Model):
@@ -115,6 +142,58 @@ class SliderImage(models.Model):
     class Meta:
         # Order slider images by their specified order
         ordering = ['order']
+
+    def __str__(self):
+        return self.title
+
+# BrandPartner model for managing partner logos in the sliding section
+class BrandPartner(models.Model):
+    # Partner name and logo image
+    name = models.CharField(max_length=100)
+    logo = models.ImageField(
+        upload_to='partners/',
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png'])],
+        help_text='Recommended size: 200x100 pixels. Use transparent background if possible.'
+    )
+    # Website URL for the partner (optional)
+    website = models.URLField(blank=True, null=True, help_text='Optional link to partner website')
+    # Control the order of partners in the slider
+    order = models.IntegerField(default=0)
+    # Control partner visibility
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # Order partners by their specified order
+        ordering = ['order']
+        verbose_name = 'Brand Partner'
+        verbose_name_plural = 'Brand Partners'
+
+    def __str__(self):
+        return self.name
+
+# GalleryImage model for managing gallery images
+class GalleryImage(models.Model):
+    # Gallery image details
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    # Image field with file extension validation
+    image = models.ImageField(
+        upload_to='gallery/',
+        validators=[FileExtensionValidator(['jpg', 'jpeg', 'png'])]
+    )
+    # Control the order of images in the gallery
+    order = models.IntegerField(default=0)
+    # Control image visibility
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Gallery Image'
+        verbose_name_plural = 'Gallery Images'
 
     def __str__(self):
         return self.title

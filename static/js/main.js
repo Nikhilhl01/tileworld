@@ -35,4 +35,49 @@ document.addEventListener('DOMContentLoaded', function() {
             form.classList.add('was-validated');
         }, false);
     });
+    
+    // Enhanced carousel functionality
+    const heroCarousel = document.getElementById('heroCarousel');
+    if (heroCarousel) {
+        const carousel = new bootstrap.Carousel(heroCarousel, {
+            interval: 5000,
+            wrap: true,
+            touch: true
+        });
+        
+        // Add smooth transition effect to carousel items
+        const carouselItems = heroCarousel.querySelectorAll('.carousel-item');
+        carouselItems.forEach(item => {
+            item.addEventListener('transitionend', () => {
+                if (item.classList.contains('active')) {
+                    item.querySelector('img').style.transform = 'scale(1.05)';
+                    item.querySelector('.carousel-caption').style.opacity = '1';
+                } else {
+                    item.querySelector('img').style.transform = 'scale(1)';
+                    item.querySelector('.carousel-caption').style.opacity = '0';
+                }
+            });
+        });
+    }
+    
+    // Scroll to top button functionality
+    const scrollToTopBtn = document.createElement('button');
+    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    scrollToTopBtn.className = 'scroll-to-top';
+    document.body.appendChild(scrollToTopBtn);
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+    
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });
